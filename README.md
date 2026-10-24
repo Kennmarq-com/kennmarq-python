@@ -12,7 +12,7 @@ pip install "kennmarq[local]"        # local mode: files never leave your machin
 pip install "kennmarq[safety]"       # the safety check on your machine too
 ```
 
-A free key marks 1,000 files a month, every feature included: [kennmarq.com](https://kennmarq.com).
+A free key comes with 1,000 marks a month and every feature: [kennmarq.com](https://kennmarq.com).
 The SDK reads it from `KENNMARQ_API_KEY`.
 
 ## Cloud

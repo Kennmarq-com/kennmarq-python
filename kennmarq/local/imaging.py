@@ -207,7 +207,14 @@ def encode(picture: Picture, media_type: str, *, xmp: bytes | None) -> bytes:
             params["dpi"] = picture.dpi
         if xmp:
             params["xmp"] = xmp
-        image.save(out, format="JPEG", quality=JPEG_QUALITY, subsampling=0, optimize=True, **params)
+        try:
+            image.save(out, format="JPEG", quality=JPEG_QUALITY, subsampling=0, optimize=True, **params)
+        except OSError:
+            # Optimising needs the whole JPEG in one buffer, which Pillow sizes at 2 bytes a pixel at this
+            # quality: a very noisy picture compresses to more ("broken data stream"). Unoptimised, the
+            # encoder streams, at a few percent more bytes.
+            out = io.BytesIO()
+            image.save(out, format="JPEG", quality=JPEG_QUALITY, subsampling=0, **params)
         return out.getvalue()
     if media_type == WEBP:
         if xmp:

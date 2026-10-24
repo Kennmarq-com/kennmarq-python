@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kennmarq"
+version = "0.2.0"
+description = "Mark AI pictures for the EU AI Act: an invisible watermark and signed, time-stamped C2PA Content Credentials."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+requires-python = ">=3.10"
+authors = [{ name = "Neuramare" }]
+keywords = ["c2pa", "content credentials", "watermark", "ai act", "trustmark", "provenance"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Multimedia :: Graphics",
+]
+# The cloud API needs nothing beyond Python itself.
+dependencies = []
+
+[project.optional-dependencies]
+# Local mode: the watermark (TrustMark Q) and the manifest (c2pa) made on this machine.
+# c2pa-python is pinned to the version Kennmarq signs for (its manifest layout).
+local = ["c2pa-python==0.38.1", "trustmark==0.9.2", "torch>=2.4", "pillow>=10.0", "numpy>=1.26", "cryptography>=42"]
+# The safety check on this machine too (its models download once, about 2.3 GB).
+safety = ["kennmarq[local]", "transformers>=4.57,<6", "onnxruntime>=1.20"]
+
+[project.urls]
+Homepage = "https://kennmarq.com"
+Documentation = "https://kennmarq.com/docs/sdk/python"
+Repository = "https://github.com/Kennmarq-com/kennmarq-python"
+Changelog = "https://kennmarq.com/docs/changelog"
+
+[tool.setuptools.packages.find]
+include = ["kennmarq*"]
+
+[tool.setuptools.package-data]
+"kennmarq.local.safety" = ["assets/*"]
